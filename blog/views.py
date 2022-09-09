@@ -10,6 +10,7 @@ from .models import Post
 from .serializers import PostSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 
 from blog import serializers
 
@@ -64,6 +65,7 @@ class PostListCreateView(APIView):
         A view for creating and listing posts
     """
     serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
     def get(self, request:Request,*args,**kwargs):
         posts = Post.objects.all()
 
@@ -217,6 +219,8 @@ class PostViewset(viewsets.ViewSet):
     CRUD magic happens using ModelViewSet jeeez
 """
 class PostViewsetModal(viewsets.ModelViewSet):
+    # get all posts 
     queryset = Post.objects.all()
 
+    # initialize serialize to be used for validation on this ModelViewset class 
     serializer_class = PostSerializer
